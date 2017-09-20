@@ -4,7 +4,7 @@ void Sort::sortByIncreasingPerimeter(std::list<Shape *> * shapeList)
 {
     shapeList->sort(
             [](Shape * s1, Shape * s2) {
-            return s1->perimeter() > s2->perimeter(); 
+            return s1->perimeter() < s2->perimeter(); 
         }
     );
 }
@@ -12,7 +12,7 @@ void Sort::sortByIncreasingPerimeter(std::list<Shape *> * shapeList)
 void Sort::sortByDecreasingPerimeter(std::list<Shape *> * shapeList){
     shapeList->sort(
             [](Shape * s1, Shape * s2) {
-            return s1->perimeter() < s2->perimeter(); 
+            return s1->perimeter() > s2->perimeter(); 
         }
     );
 }
@@ -20,7 +20,7 @@ void Sort::sortByDecreasingPerimeter(std::list<Shape *> * shapeList){
 void Sort::sortByIncreasingArea(std::list<Shape *> * shapeList){
     shapeList->sort(
             [](Shape * s1, Shape * s2) {
-            return s1->area() > s2->area(); 
+            return s1->area() < s2->area(); 
         }
     );
 }
@@ -28,7 +28,7 @@ void Sort::sortByIncreasingArea(std::list<Shape *> * shapeList){
 void Sort::sortByDecreasingArea(std::list<Shape *> * shapeList){
     shapeList->sort(
             [](Shape * s1, Shape * s2) {
-            return s1->area() < s2->area(); 
+            return s1->area() > s2->area(); 
         }
     );
 }
@@ -37,7 +37,7 @@ void Sort::sortByIncreasingCompactness(std::list<Shape *> * shapeList){
     // Compactness = area/perimeter
     shapeList->sort(
             [](Shape * s1, Shape * s2) {
-            return s1->area() / s1->perimeter() > s2->area() / s2->perimeter(); 
+            return s1->area() / s1->perimeter() < s2->area() / s2->perimeter(); 
         }
     );
 }
