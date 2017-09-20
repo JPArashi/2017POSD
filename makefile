@@ -1,27 +1,24 @@
 INC_DIR = include
-HW_NAME = hw1
 
-all: $(HW_NAME)
+all: exp
 
-${HW_NAME}: main.o Shapes.o Media.o Sort.o
+exp: mainExp.o Shapes.o Media.o
 ifeq (${OS}, Windows_NT)
-	g++ -o $(HW_NAME) main.o Shapes.o Media.o Sort.o -lgtest
+	g++ -o exp mainExp.o Shapes.o Media.o -lgtest
 else
-	g++ -o $(HW_NAME) main.o Shapes.o Media.o Sort.o -lgtest -lpthread
+	g++ -o exp mainExp.o Shapes.o Media.o -lgtest -lpthread
 endif
 	
-main.o: main.cpp utSort.h
-	g++ -std=gnu++0x -c main.cpp
+mainExp.o: mainExp.cpp exp.h
+	g++ -std=gnu++0x -c mainExp.cpp
 Shapes.o: $(INC_DIR)/Shapes.h Shapes.cpp
 	g++ -std=gnu++0x -c Shapes.cpp
 Media.o: $(INC_DIR)/Media.h Media.cpp
 	g++ -std=gnu++0x -c Media.cpp
-Sort.o: $(INC_DIR)/Sort.h Sort.cpp
-	g++ -std=gnu++0x -c Sort.cpp
 
 clean:	
 ifeq (${OS}, Windows_NT)
 	del *.o *.exe
 else
-	rm -f *.o $(HW_NAME)
+	rm -f *.o exp
 endif

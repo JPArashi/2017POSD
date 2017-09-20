@@ -1,3 +1,4 @@
+
 #include "include/Shapes.h"
 
 double sumOfArea(const std::vector<Shape *> & shapes) {
