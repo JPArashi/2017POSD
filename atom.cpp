@@ -2,7 +2,7 @@
 #include "variable.h"
 #include "number.h"
 
-bool Atom::operator==(Atom a) {
+bool Atom::operator==(Atom a){
     return _symbol == a._symbol;
 }
 bool Atom::match( Number n ){
