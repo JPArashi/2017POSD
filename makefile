@@ -1,4 +1,3 @@
-all: madRace utAtom
 HW_NAME = hw2
 
 all: $(HW_NAME)
