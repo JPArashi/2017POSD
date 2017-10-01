@@ -11,9 +11,18 @@ mainAtom.o: mainAtom.cpp utAtom.h atom.h
 	g++ -std=c++11 -c mainAtom.cpp
 
 utVariable: mainVariable.o
-		g++ -o utVariable mainVariable.o -lgtest -lpthread
+	g++ -o utVariable mainVariable.o -lgtest -lpthread
 mainVariable.o: mainVariable.cpp utVariable.h variable.h
-		g++ -std=c++11 -c mainVariable.cpp
+	g++ -std=c++11 -c mainVariable.cpp
+
+utTerm: mainTerm.o atom.o variable.o number.o
+	g++ -o utTerm mainTerm.o atom.o variable.o number.o -lgtest -lpthread
+mainTerm.o: mainTerm.cpp atom.h variable.h number.h utTerm.h
+	g++ -std=c++11 -c mainTerm.cpp
+	g++ -std=c++11 -c atom.cpp
+	g++ -std=c++11 -c variable.cpp
+	g++ -std=c++11 -c number.cpp
+
 
 #exp: mainExp.o
 #	g++ -o exp mainExp.o -lgtest -lpthread
@@ -38,6 +47,6 @@ mainVariable.o: mainVariable.cpp utVariable.h variable.h
 #list.o: list.h list.cpp term.h var.h
 #	g++ -std=c++11 -c list.cpp
 clean:
-	rm -f *.o madRace utAtom
+	rm -f *.o madRace utAtom utVariable utTerm
 stat:
 	wc *.h *.cpp
