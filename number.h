@@ -15,7 +15,7 @@ public:
     bool match( Atom a );
     bool match( Variable &v );
 private:
-	int const _symbol;
+	int _symbol;
 	int _value;
 };
 

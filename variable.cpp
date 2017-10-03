@@ -5,10 +5,10 @@
 #include <iostream>
 
 bool Variable::match( Atom atom ){
-    bool ret = _assignable || (_type == "string" && _svalue == atom._symbol);
+    bool ret = _assignable || (_type == "string" && _svalue == atom.symbol());
     if(_assignable){
         _type = "string";
-        _svalue = atom._symbol;
+        _svalue = atom.symbol();
         _assignable = false;
     }
     return ret;
