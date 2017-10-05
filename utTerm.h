@@ -8,12 +8,12 @@
 //test Number.value()
 TEST (Number,ctor) {
     Number n(10);
-    ASSERT_EQ(10, n.value());
+    ASSERT_EQ("10", n.value());
 }
 //test Number.symbol()
 TEST (Number, symbol) {
     Number n(10);
-    ASSERT_EQ(10, n.symbol());
+    ASSERT_EQ("10", n.symbol());
 }
 //?- 25=25.
 //true.

@@ -8,15 +8,19 @@ using std::string;
 
 class Number{
 public:
-	Number(int i):_symbol(i), _value(i){}
-	int value(){ return _value; }
-	int symbol(){ return _symbol; }
+	Number(int i)
+	{
+		_symbol = std::to_string(i);
+		_value = std::to_string(i);
+	}
+	string value(){ return _value; }
+	string symbol(){ return _symbol; }
 	bool match( Number n );
     bool match( Atom a );
     bool match( Variable &v );
 private:
-	int _symbol;
-	int _value;
+	string _symbol;
+	string _value;
 };
 
 #endif

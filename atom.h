@@ -2,8 +2,6 @@
 #define ATOM_H
 
 #include <string>
-// #include "number.h"
-// #include "variable.h"
 class Number;
 class Variable;
 
