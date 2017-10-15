@@ -15,13 +15,12 @@ public:
 	{ 
 		return _symbol; 
 	}
-  string value() const 
+  string avalue() const 
   {
-    return "";
     if(_vectorPointer == -1)
       return symbol();
     else
-      return _value[_vectorPointer]->value(); 
+      return _value[_vectorPointer]->avalue(); 
   }
   bool match( Term & term ){
     Variable * pv = dynamic_cast<Variable *>(&term);

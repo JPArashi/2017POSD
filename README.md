@@ -15,7 +15,7 @@ Please use [the files that were used in course](https://github.com/yccheng66/pos
       ```c++
       Number(double value);
       std::string symbol();
-      std::string value();
+      std::string avalue();
       ```
 
   2. Implement all tests in `utStrcut.h` and `utVariable.h`. The describe of test have been written on each test.
