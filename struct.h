@@ -10,8 +10,7 @@ using std::string;
 class Struct:public Term
 {
 public:
-  Struct(Atom const & name, std::vector<Term *> args):_name(name), _args(args) {
-  }
+  Struct(Atom const & name, std::vector<Term *> args):_name(name), _args(args) {}
 
   Term * args(int index) {
     return _args[index];
@@ -25,7 +24,15 @@ public:
     for(int i = 0; i < _args.size() - 1 ; i++){
       ret += _args[i]-> symbol() + ", ";
     }
-    ret += _args[_args.size()-1]-> symbol() + ")";
+    ret += _args[_args.size()-1]->symbol() + ")";
+    return  ret;
+  }
+  string value() const{
+    string ret =_name.symbol() + "(";
+    for(int i = 0; i < _args.size() - 1 ; i++){
+      ret += _args[i]-> value() + ", ";
+    }
+    ret += _args[_args.size()-1]->value() + ")";
     return  ret;
   }
   bool match(Term &term){

@@ -9,7 +9,7 @@ else
 	g++ -o $(HW_NAME) mainUTAll.o -lgtest -lpthread
 endif
 
-mainUTAll.o: mainUTAll.cpp atom.h variable.h number.h term.h
+mainUTAll.o: mainUTAll.cpp atom.h variable.h number.h term.h utVariable.h utStruct.h struct.h
 	g++ -std=gnu++0x -c mainUTAll.cpp
 
 clean:	
