@@ -17,6 +17,7 @@ public:
 	}
   string value() const 
   {
+    return "";
     if(_vectorPointer == -1)
       return symbol();
     else
