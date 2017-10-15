@@ -1,4 +1,4 @@
-HW_NAME = hw2
+HW_NAME = hw3
 
 all: $(HW_NAME)
 
