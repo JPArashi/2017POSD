@@ -1,26 +1,19 @@
 #ifndef NUMBER_H
 #define NUMBER_H
 
+#include "term.h"
 #include <string>
-class Atom;
-class Variable;
 using std::string;
 
-class Number{
+class Number : public Term{
 public:
-	Number(int i)
-	{
-		_symbol = std::to_string(i);
-		_value = std::to_string(i);
+	Number (double d):_symbol(std::to_string(d)) {}
+	string symbol() const
+	{ 
+		return _symbol; 
 	}
-	string value(){ return _value; }
-	string symbol(){ return _symbol; }
-	bool match( Number n );
-    bool match( Atom a );
-    bool match( Variable &v );
 private:
 	string _symbol;
-	string _value;
 };
 
 #endif

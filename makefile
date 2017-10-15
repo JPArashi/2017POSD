@@ -2,18 +2,15 @@ HW_NAME = hw3
 
 all: $(HW_NAME)
 
-${HW_NAME}: mainTerm.o atom.o variable.o number.o
+${HW_NAME}: mainUTAll.o
 ifeq (${OS}, Windows_NT)
-	g++ -o $(HW_NAME) mainTerm.o atom.o variable.o number.o -lgtest
+	g++ -o $(HW_NAME) mainUTAll.o -lgtest
 else
-	g++ -o $(HW_NAME) mainTerm.o atom.o variable.o number.o -lgtest -lpthread
+	g++ -o $(HW_NAME) mainUTAll.o -lgtest -lpthread
 endif
-	
-mainTerm.o: mainTerm.cpp atom.h variable.h number.h utTerm.h
-	g++ -std=gnu++0x -c mainTerm.cpp
-	g++ -std=gnu++0x -c atom.cpp
-	g++ -std=gnu++0x -c variable.cpp
-	g++ -std=gnu++0x -c number.cpp
+
+mainUTAll.o: mainUTAll.cpp atom.h variable.h number.h term.h
+	g++ -std=gnu++0x -c mainUTAll.cpp
 
 clean:	
 ifeq (${OS}, Windows_NT)
