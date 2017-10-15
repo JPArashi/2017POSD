@@ -4,6 +4,7 @@ all: $(HW_NAME)
 
 ${HW_NAME}: mainUTAll.o
 ifeq (${OS}, Windows_NT)
+	clean
 	g++ -o $(HW_NAME) mainUTAll.o -lgtest
 else
 	g++ -o $(HW_NAME) mainUTAll.o -lgtest -lpthread
