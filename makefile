@@ -4,7 +4,6 @@ all: $(HW_NAME)
 
 ${HW_NAME}: mainUTAll.o
 ifeq (${OS}, Windows_NT)
-	del *.o *.exe "utVariable - Copy (2).h" "utVariable2.h"
 	g++ -o $(HW_NAME) mainUTAll.o -lgtest
 else
 	g++ -o $(HW_NAME) mainUTAll.o -lgtest -lpthread
