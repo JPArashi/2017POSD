@@ -25,12 +25,12 @@ public:
     ret += _args[_args.size()-1]->symbol() + ")";
     return  ret;
   }
-  string avalue() const{
+  string value() const{
     string ret =_name.symbol() + "(";
     for(int i = 0; i < _args.size() - 1 ; i++){
-      ret += _args[i]-> avalue() + ", ";
+      ret += _args[i]-> symbol() + ", ";
     }
-    ret += _args[_args.size()-1]->avalue() + ")";
+    ret += _args[_args.size()-1]->symbol() + ")";
     return  ret;
   }
   bool match(Term &term){

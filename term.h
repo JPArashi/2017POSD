@@ -10,12 +10,12 @@ class Term{
 public:
   virtual string symbol() const= 0;
 
-  virtual string avalue() const{
+  virtual string value() const{
     return symbol();
   };
 
   virtual bool match(Term & term) {
-    return avalue() == term.avalue();
+    return value() == term.value();
   }
 };
 
