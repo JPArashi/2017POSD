@@ -17,44 +17,28 @@ public:
 	}
   string value() const 
   {
-    if(_vectorPointer == -1)
-      return symbol();
+    if(_value)
+      return _value->value();
     else
-      return _value[_vectorPointer]->value(); 
+      return symbol(); 
   }
+
   bool match( Term & term ){
-    Variable * pv = dynamic_cast<Variable *>(&term);
-    if (pv){
-      if(_vectorPointer!=-1 && pv->_vectorPointer!=-1){
-        return false;
-      }else if(_vectorPointer!=-1){
-        pv->_vectorPointer = _vectorPointer;
-        return true;
-      }else if(pv->_vectorPointer!=-1){
-        _vectorPointer = pv->_vectorPointer;
-        return true;
-      }else{
-        _value.push_back(NULL);
-        pv->_vectorPointer = _vectorPointer = _value.size()-1;
-        return true;
-      }
-    }else if(_vectorPointer == -1){
-      _value.push_back(&term);
-      _vectorPointer = _value.size()-1;
+    if(&term == this){
       return true;
-    }else if(_value[_vectorPointer] == NULL){
-      _value[_vectorPointer] = &term;
     }
-    return false;
+    if(!_value){
+      _value = &term;
+    }else{
+      return _value->match(term);
+    }
   }
 
 private:
   string _symbol;
   bool _assignable = true;
-  static vector<Term *> _value;
+  Term * _value = NULL;
   int _vectorPointer = -1;
 };
-
-vector<Term *> Variable::_value;
 
 #endif

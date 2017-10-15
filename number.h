@@ -2,6 +2,7 @@
 #define NUMBER_H
 
 #include "term.h"
+#include "variable.h"
 #include <string>
 using std::string;
 
@@ -21,6 +22,12 @@ public:
 	string symbol() const
 	{ 
 		return _symbol; 
+	}
+	bool match(Term & term) {
+		return value() == term.value();
+	}
+	bool match(Variable & var) {
+		return var.match(*this);
 	}
 private:
 	string _symbol;

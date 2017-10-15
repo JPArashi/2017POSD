@@ -2,6 +2,7 @@
 #define ATOM_H
 
 #include "term.h"
+#include "variable.h"
 #include <string>
 using std::string;
 
@@ -14,6 +15,14 @@ public:
   }
 
   string _symbol;
+
+  bool match(Term & term) {
+    return value() == term.value();
+  }
+
+  bool match(Variable & var) {
+    return var.match(*this);
+  }
 };
 
 
