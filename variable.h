@@ -20,7 +20,7 @@ public:
     if(_vectorPointer == -1)
       return symbol();
     else
-      return _value[_vectorPointer]->symbol(); 
+      return _value[_vectorPointer]->value(); 
   }
   bool match( Term & term ){
     Variable * pv = dynamic_cast<Variable *>(&term);
