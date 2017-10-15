@@ -29,6 +29,7 @@ public:
     }
     if(!_value){
       _value = &term;
+      return true;
     }else{
       return _value->match(term);
     }
