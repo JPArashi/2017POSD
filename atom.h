@@ -10,17 +10,20 @@ class Atom : public Term{
 public:
   Atom (string s):_symbol(s) {}
 
-  string symbol() const{
+  string symbol() const
+  {
     return _symbol;
   }
 
   string _symbol;
 
-  bool match(Term & term) {
+  bool match(Term & term) 
+  {
     return value() == term.value();
   }
 
-  bool match(Variable & var) {
+  bool match(Variable & var) 
+  {
     return var.match(*this);
   }
 };

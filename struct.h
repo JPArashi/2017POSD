@@ -12,26 +12,32 @@ class Struct:public Term
 public:
   Struct(Atom const & name, std::vector<Term *> args):_name(name), _args(args) {}
   
-  Term * args(int index) {
+  Term * args(int index) 
+  {
     return _args[index];
   }
   
-  Atom const & name() {
+  Atom const & name() 
+  {
     return _name;
   }
 
-  string symbol() const{
+  string symbol() const
+  {
     string ret =_name.symbol() + "(";
-    for(int i = 0; i < _args.size() - 1 ; i++){
+    for(int i = 0; i < _args.size() - 1 ; i++)
+    {
       ret += _args[i]-> symbol() + ", ";
     }
     ret += _args[_args.size()-1]->symbol() + ")";
     return  ret;
   }
 
-  string value() const{
+  string value() const
+  {
     string ret =_name.symbol() + "(";
-    for(int i = 0; i < _args.size() - 1 ; i++){
+    for(int i = 0; i < _args.size() - 1 ; i++)
+    {
       ret += _args[i]-> value() + ", ";
     }
     ret += _args[_args.size()-1]->value() + ")";
@@ -40,7 +46,8 @@ public:
 
   bool match(Term &term){
     Struct * ps = dynamic_cast<Struct *>(&term);
-    if (ps){
+    if (ps)
+    {
       if (!_name.match(ps->_name))
         return false;
       if(_args.size()!= ps->_args.size())

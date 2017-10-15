@@ -11,7 +11,8 @@ public:
 	Number (double d)
 	{
 		string temp = std::to_string(d);
-		for(int i = temp.size()-1; i>=0; i--){
+		for(int i = temp.size()-1; i>=0; i--)
+		{
 			if(temp[i]=='0' || temp[i]=='.')
 				temp.pop_back();
 			else
@@ -25,11 +26,13 @@ public:
 		return _symbol; 
 	}
 
-	bool match(Term & term) {
+	bool match(Term & term) 
+	{
 		return value() == term.value();
 	}
 	
-	bool match(Variable & var) {
+	bool match(Variable & var) 
+	{
 		return var.match(*this);
 	}
 private:

@@ -13,7 +13,7 @@ public:
   Variable(string s):_symbol(s){}
 
   string symbol() const
-	{ 
+  { 
 		return _symbol; 
   }
   
@@ -25,14 +25,19 @@ public:
       return symbol(); 
   }
 
-  bool match( Term & term ){
-    if(&term == this){
+  bool match( Term & term )
+  {
+    if(&term == this)
+    {
       return true;
     }
-    if(!_value){
+    if(!_value)
+    {
       _value = &term;
       return true;
-    }else{
+    }
+    else
+    {
       return _value->match(term);
     }
   }
