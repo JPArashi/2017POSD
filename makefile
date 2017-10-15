@@ -14,7 +14,7 @@ mainUTAll.o: mainUTAll.cpp atom.h variable.h number.h term.h utVariable.h utStru
 
 clean:	
 ifeq (${OS}, Windows_NT)
-	del *.o *.exe
+	del *.o *.exe 
 else
 	rm -f *.o $(HW_NAME)
 endif
