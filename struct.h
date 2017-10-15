@@ -14,9 +14,11 @@ public:
   Term * args(int index) {
     return _args[index];
   }
+  
   Atom const & name() {
     return _name;
   }
+
   string symbol() const{
     string ret =_name.symbol() + "(";
     for(int i = 0; i < _args.size() - 1 ; i++){
@@ -25,6 +27,7 @@ public:
     ret += _args[_args.size()-1]->symbol() + ")";
     return  ret;
   }
+
   string value() const{
     string ret =_name.symbol() + "(";
     for(int i = 0; i < _args.size() - 1 ; i++){
@@ -33,6 +36,7 @@ public:
     ret += _args[_args.size()-1]->value() + ")";
     return  ret;
   }
+
   bool match(Term &term){
     Struct * ps = dynamic_cast<Struct *>(&term);
     if (ps){
