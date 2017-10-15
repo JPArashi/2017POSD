@@ -19,13 +19,16 @@ public:
 		}
 		_symbol = temp;
 	}
+
 	string symbol() const
 	{ 
 		return _symbol; 
 	}
+
 	bool match(Term & term) {
 		return value() == term.value();
 	}
+	
 	bool match(Variable & var) {
 		return var.match(*this);
 	}
