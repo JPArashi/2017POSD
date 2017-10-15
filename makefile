@@ -11,7 +11,6 @@ endif
 
 mainUTAll.o: mainUTAll.cpp atom.h variable.h number.h term.h utVariable.h utStruct.h struct.h
 	g++ -std=gnu++0x -c mainUTAll.cpp
-	more utVariable.h
 
 clean:	
 ifeq (${OS}, Windows_NT)
