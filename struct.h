@@ -36,12 +36,18 @@ public:
   string value() const
   {
     string ret =_name.symbol() + "(";
-    for(int i = 0; i < _args.size() - 1 ; i++)
+    for(int i = 0; i < (int)_args.size() ; i++)
     {
-      ret += _args[i]-> value() + ", ";
+      if(i == (int)_args.size() - 1 )
+      {
+        ret += _args[i]->value();
+      }
+      else
+      {
+        ret += _args[i]->value() + ", ";
+      }
     }
-    ret += _args[_args.size()-1]->value() + ")";
-    return  ret;
+    return  ret + ")";
   }
 
   bool match(Term &term){
@@ -60,6 +66,17 @@ public:
     }
     return false;
   }
+
+  bool match(Variable & var) 
+	{
+		return var.match(*this);
+  }
+  
+  Struct* getStruct() 
+  {
+    return this;
+  }
+  
 private:
   Atom _name;
   std::vector<Term *> _args;

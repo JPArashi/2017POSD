@@ -28,12 +28,14 @@ public:
 
 	bool match(Term & term) 
 	{
-		return value() == term.value();
-	}
-	
-	bool match(Variable & var) 
-	{
-		return var.match(*this);
+		if(term.getVariable())
+		{
+			return term.match(*this);
+		}
+		else
+		{
+			return value() == term.value();
+		}
 	}
 private:
 	string _symbol;

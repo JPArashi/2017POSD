@@ -25,7 +25,7 @@ public:
       return symbol(); 
   }
 
-  bool match( Term & term )
+  bool match( Term &term )
   {
     if(&term == this)
     {
@@ -40,6 +40,11 @@ public:
     {
       return _value->match(term);
     }
+  }
+
+  Variable* getVariable() 
+  {
+    return this;
   }
 
 private:
