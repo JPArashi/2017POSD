@@ -174,4 +174,3 @@ TEST(Struct, nested_struct_and_multiVariable)
   EXPECT_EQ("s1(s2(Y), X)", s1.symbol());
   EXPECT_EQ("s1(s2(kent_beck), kent_beck)", s1.value());
 }
-
