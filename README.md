@@ -8,6 +8,10 @@ Please use [the files that were used in course](https://github.com/yccheng66/pos
 
 #### Update
 
+ * Tue Oct 24 2017 11:01:43
+ 
+   We have already corrected the configuration of .ut job, so you can see the error msg when the test is crash. If you still cannot get the test report and also any error msg, reply to us.
+
  * Mon Oct 23 2017 09:54:36
  
    * Please check your ut job, if it's passed but there is no test report comes out (besides first time building), it means your progarm actually is crash. We are discussing about this cas and think about how to fix it or is there other solution. 
@@ -17,7 +21,7 @@ Please use [the files that were used in course](https://github.com/yccheng66/pos
       About this metter, we need to check the definition of matching. In the section 2.2 *Matching* of the book: PROLOG Programming for Artificial Intelligence (third version, Ivan Bratko, 0-201-40375-7), said if two terms match, it must: (1)They are identical, or (2) the variables in both terms can be instantiated to objects in such a way that after the substitution of variables by these objects the terms become identical. Rule (1) is easy to understand, but what is rule (2)? Rule (2) means that if it can get the any value which can make the equation holds, we said it match. For our case, if variable X could be instantiated by any value that make the equation holds, the #match() should return true, otherwise returns false. **But it couldn't be, and also not yet.**\
       \
       We can't set true or false on this case utill the variable X can be instantiated. In SWI-Prolog you will get the string "X = [496, X, terence_tao]" as the result instead of false, but it doesn't mean that this matching actually returns true or false(in program). So, for this one, **we just decided to make it not score. You can get the points but you still need to write the test, we don't care about the true or false it returns.**
-   
+   
 #### Assignment requirement
 
   1.  Implement `List` according to the `list.h`, and also all tests in `utList.h`.

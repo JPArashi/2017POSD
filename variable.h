@@ -8,49 +8,37 @@
 using std::string;
 using std::vector;
 
-class Variable : public Term{
+class Variable : public Term {
 public:
-  Variable(string s):_symbol(s){}
+  Variable(string s) : _symbol(s) {}
 
-  string symbol() const
-  { 
-		return _symbol; 
-  }
-  
-  string value() const 
-  {
-    if(_value)
+  string symbol() const { return _symbol; }
+
+  string value() const {
+    if (_value)
       return _value->value();
     else
-      return symbol(); 
+      return symbol();
   }
 
-  bool match( Term &term )
-  {
-    if(&term == this)
-    {
+  bool match(Term &term) {
+    if (&term == this) {
       return true;
     }
-    if(!_value)
-    {
+    if (!_value) {
       _value = &term;
       return true;
-    }
-    else
-    {
+    } else {
       return _value->match(term);
     }
   }
 
-  Variable* getVariable() 
-  {
-    return this;
-  }
+  Variable *getVariable() { return this; }
 
 private:
   string _symbol;
   bool _assignable = true;
-  Term * _value = NULL;
+  Term *_value = NULL;
   int _vectorPointer = -1;
 };
 

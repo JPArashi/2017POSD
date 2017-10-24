@@ -8,20 +8,17 @@ class Struct;
 class Variable;
 class List;
 
-class Term{
+class Term {
 public:
   virtual string symbol() const = 0;
 
-  virtual string value() const
-  {
-    return symbol();
-  }
+  virtual string value() const { return symbol(); }
 
-  virtual bool match(Term & term) = 0;
+  virtual bool match(Term &term) = 0;
 
-  virtual Struct* getStruct() {return NULL;}
-  virtual Variable* getVariable() {return NULL;}
-  virtual List* getList() {return NULL;}
+  virtual Struct *getStruct() { return NULL; }
+  virtual Variable *getVariable() { return NULL; }
+  virtual List *getList() { return NULL; }
 };
 
 #endif
