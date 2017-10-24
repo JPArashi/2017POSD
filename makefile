@@ -1,6 +1,6 @@
 HW_NAME = hw4
 HEADER_FILE = atom.h variable.h struct.h number.h term.h list.h
-UNIT_TEST_FILE = utVariable.h utStruct.h utList.h
+UNIT_TEST_FILE = utList.h
 
 all: $(HW_NAME)
 
