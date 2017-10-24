@@ -65,7 +65,7 @@ public:
 
   List *tail() const {
     if (_elements.empty()) {
-      throw string("Accessing head in an empty list");
+      throw string("Accessing tail in an empty list");
     } else {
       List *tempList = new List(vector<Term *>(
           _elements.end() - _elements.size() + 1, _elements.end()));

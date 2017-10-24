@@ -237,7 +237,7 @@ TEST(List, emptyExecptionOfTail) {
   try {
     l.tail();
   } catch (string err) {
-    EXPECT_EQ("Accessing head in an empty list", err);
+    EXPECT_EQ("Accessing tail in an empty list", err);
   }
 }
 
