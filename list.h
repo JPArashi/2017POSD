@@ -2,7 +2,6 @@
 #define LIST_H
 
 #include "term.h"
-
 #include <vector>
 using std::vector;
 
