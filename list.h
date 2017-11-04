@@ -5,46 +5,67 @@
 #include <vector>
 using std::vector;
 
-class List : public Term {
+class List : public Term
+{
 public:
-  string symbol() const {
+  string symbol() const
+  {
     string ret = "[";
-    for (int i = 0; i < (int)_elements.size(); i++) {
-      if (i == (int)_elements.size() - 1) {
+    for (int i = 0; i < (int)_elements.size(); i++)
+    {
+      if (i == (int)_elements.size() - 1)
+      {
         ret += _elements[i]->symbol();
-      } else {
+      }
+      else
+      {
         ret += _elements[i]->symbol() + ", ";
       }
     }
     return ret + "]";
   }
 
-  string value() const {
+  string value() const
+  {
     string ret = "[";
-    for (int i = 0; i < (int)_elements.size(); i++) {
-      if (i == (int)_elements.size() - 1) {
+    for (int i = 0; i < (int)_elements.size(); i++)
+    {
+      if (i == (int)_elements.size() - 1)
+      {
         ret += _elements[i]->value();
-      } else {
+      }
+      else
+      {
         ret += _elements[i]->value() + ", ";
       }
     }
     return ret + "]";
   }
 
-  bool match(Term &term) {
-    if (term.getVariable()) {
+  bool match(Term &term)
+  {
+    if (term.getVariable())
+    {
       return term.match(*this);
-    } else if (List *pl = term.getList()) {
-      if (_elements.size() != pl->_elements.size()) {
+    }
+    else if (List *pl = term.getList())
+    {
+      if (_elements.size() != pl->_elements.size())
+      {
         return false;
-      } else {
-        for (int i = 0; i < _elements.size(); i++) {
+      }
+      else
+      {
+        for (int i = 0; i < _elements.size(); i++)
+        {
           if (!_elements[i]->match(*(pl->_elements[i])))
             return false;
         }
         return true;
       }
-    } else {
+    }
+    else
+    {
       return false;
     }
   }
@@ -54,18 +75,26 @@ public:
 public:
   List() : _elements() {}
   List(vector<Term *> const &elements) : _elements(elements) {}
-  Term *head() const {
-    if (_elements.empty()) {
+  Term *head() const
+  {
+    if (_elements.empty())
+    {
       throw string("Accessing head in an empty list");
-    } else {
+    }
+    else
+    {
       return _elements[0];
     }
   }
 
-  List *tail() const {
-    if (_elements.empty()) {
+  List *tail() const
+  {
+    if (_elements.empty())
+    {
       throw string("Accessing tail in an empty list");
-    } else {
+    }
+    else
+    {
       List *tempList = new List(vector<Term *>(
           _elements.end() - _elements.size() + 1, _elements.end()));
       return tempList;
