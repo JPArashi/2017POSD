@@ -21,7 +21,7 @@ public:
   string symbol() const
   {
     string ret = _name.symbol() + "(";
-    for (int i = 0; i < _args.size() - 1; i++)
+    for (int i = 0; i < (int)_args.size() - 1; i++)
     {
       ret += _args[i]->symbol() + ", ";
     }

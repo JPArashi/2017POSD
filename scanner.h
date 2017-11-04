@@ -41,6 +41,10 @@ class Scanner
             processToken<VAR>(s);
             return VAR;
         }
+        else if (currentChar() == '[')
+        {
+            return LIST;
+        }
         else
         {
             _tokenValue = NONE;

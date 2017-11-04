@@ -9,6 +9,7 @@ using std::string;
 #include "global.h"
 #include "scanner.h"
 #include "struct.h"
+#include "list.h"
 
 class Parser
 {
@@ -25,18 +26,29 @@ class Parser
         {
             return new Number(_scanner.tokenValue());
         }
-        else if (token == ATOM)
+        else if (token == ATOM || token == ATOMSC)
         {
             Atom *atom = new Atom(symtable[_scanner.tokenValue()].first);
             if (_scanner.currentChar() == '(')
             {
-                _scanner.nextToken();
+                _scanner.extractChar();
                 vector<Term *> terms = getArgs();
-                if (_currentToken == ')')
+                if (terms.empty() || _currentToken == ')')
                     return new Struct(*atom, terms);
+                else
+                    throw string("unexpected token");
             }
             else
                 return atom;
+        }
+        else if (token == LIST)
+        {
+            _scanner.extractChar();
+            vector<Term *> terms = getArgs();
+            if (terms.empty() || _currentToken == ']')
+                return new List(terms);
+            else
+                throw string("unexpected token");
         }
         return nullptr;
     }
@@ -45,8 +57,9 @@ class Parser
     {
         Term *term = createTerm();
         vector<Term *> args;
-        if (term)
-            args.push_back(term);
+        if (!term)
+            return args;
+        args.push_back(term);
         while ((_currentToken = _scanner.nextToken()) == ',')
         {
             args.push_back(createTerm());
