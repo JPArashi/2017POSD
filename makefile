@@ -1,6 +1,7 @@
-HW_NAME = hw4
-HEADER_FILE = atom.h variable.h struct.h number.h term.h list.h
-UNIT_TEST_FILE = utList.h
+HW_NAME = hw5
+HEADER_FILE = atom.h variable.h struct.h number.h term.h \
+		      list.h scanner.h parser.h global.h
+UNIT_TEST_FILE = utParser.h
 
 all: $(HW_NAME)
 
