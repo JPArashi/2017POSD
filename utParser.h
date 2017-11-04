@@ -252,8 +252,8 @@ TEST_F(ParserTest, parseStructNoArg)
 {
     Scanner scanner("point()");
     Parser parser(scanner);
-    ASSERT_TRUE(parser.createTerm());
-    // ASSERT_EQ("point()", parser.createTerm()->symbol());
+    // ASSERT_TRUE(parser.createTerm());
+    ASSERT_EQ("point()", parser.createTerm()->symbol());
 }
 
 // Given there is string: " 12345,  tom,   Date" in scanner.

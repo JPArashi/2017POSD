@@ -21,11 +21,18 @@ public:
   string symbol() const
   {
     string ret = _name.symbol() + "(";
-    for (int i = 0; i < (int)_args.size() - 1; i++)
+    for (int i = 0; i < (int)_args.size(); i++)
     {
-      ret += _args[i]->symbol() + ", ";
+      if (i == (int)_args.size() - 1)
+      {
+        ret += _args[i]->symbol();
+      }
+      else
+      {
+        ret += _args[i]->symbol() + ", ";
+      }
     }
-    ret += _args[_args.size() - 1]->symbol() + ")";
+    ret += ")";
     return ret;
   }
 
@@ -34,6 +41,7 @@ public:
     string ret = _name.symbol() + "(";
     for (int i = 0; i < (int)_args.size(); i++)
     {
+
       if (i == (int)_args.size() - 1)
       {
         ret += _args[i]->value();
