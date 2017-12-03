@@ -6,373 +6,187 @@
 #include "atom.h"
 #include "list.h"
 #include "number.h"
-#include "parser.h"
 #include "iterator.h"
 
-TEST(iterator, first)
-{
-    Number one(1);
-    Variable X("X");
-    Variable Y("Y");
-    Number two(2);
-    Struct t(Atom("t"), {&X, &two});
-    Struct s(Atom("s"), {&one, &t, &Y});
-    StructIterator it(&s);
-    Iterator &itStruct = it;
-    itStruct.first();
-    ASSERT_EQ("1", itStruct.currentItem()->symbol());
-    ASSERT_FALSE(itStruct.isDone());
-    itStruct.next();
-    ASSERT_EQ("t(X, 2)", itStruct.currentItem()->symbol());
-    ASSERT_FALSE(itStruct.isDone());
-    itStruct.next();
-    ASSERT_EQ("Y", itStruct.currentItem()->symbol());
-    itStruct.next();
-    ASSERT_TRUE(itStruct.isDone());
-}
+#include <vector>
+using std::vector;
 
-TEST(iterator, nested_iterator)
+TEST(iterator, DFS_struct_1D)
 {
-    Number one(1);
-    Variable X("X");
-    Variable Y("Y");
-    Number two(2);
-    Struct t(Atom("t"), {&X, &two});
-    Struct s(Atom("s"), {&one, &t, &Y});
-    StructIterator it(&s);
-    it.first();
-    it.next();
-    Struct *s2 = dynamic_cast<Struct *>(it.currentItem());
+    Number n1(1);
+    Atom a1("a");
+    vector<Term *> v = {&n1, &a1};
+    Struct s(Atom("s"), v);
 
-    StructIterator it2(s2);
-    it2.first();
-    ASSERT_EQ("X", it2.currentItem()->symbol());
-    ASSERT_FALSE(it2.isDone());
-    it2.next();
-    ASSERT_EQ("2", it2.currentItem()->symbol());
-    ASSERT_FALSE(it2.isDone());
-    it2.next();
-    ASSERT_TRUE(it2.isDone());
-}
-
-TEST(iterator, firstList)
-{
-    Number one(1);
-    Variable X("X");
-    Variable Y("Y");
-    Number two(2);
-    Struct t(Atom("t"), {&X, &two});
-    List l({&one, &t, &Y});
-    ListIterator it(&l);
-    Iterator *itList = &it;
-    itList->first();
-    ASSERT_EQ("1", itList->currentItem()->symbol());
-    ASSERT_FALSE(itList->isDone());
-    itList->next();
-    ASSERT_EQ("t(X, 2)", itList->currentItem()->symbol());
-    ASSERT_FALSE(itList->isDone());
-    itList->next();
-    ASSERT_EQ("Y", itList->currentItem()->symbol());
-    itList->next();
-    ASSERT_TRUE(itList->isDone());
-}
-
-TEST(iterator, NullIterator)
-{
-    Number one(1);
-    NullIterator nullIterator(&one);
-    nullIterator.first();
-    ASSERT_TRUE(nullIterator.isDone());
-    Iterator *it = one.createIterator();
+    Iterator<Term *> *it = s.createDFSIterator();
     it->first();
-    ASSERT_TRUE(it->isDone());
-}
-
-TEST(Iterator, DFS_OneMatching)
-{
-    Scanner scanner("X=1.");
-    Parser parser(scanner);
-    parser.matchings();
-    Node *et = parser.expressionTree();
-
-    Iterator *it = et->createDFSIterator();
-    it->first();
-
-    ASSERT_EQ("=", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("X", it->currentItem()->symbol());
-    it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("a", it->currentItem()->symbol());
     ASSERT_TRUE(it->isDone());
 }
 
-TEST(Iterator, DFS_TwoTermsMatching)
+TEST(iterator, DFS_struct_3D)
 {
-    Scanner scanner("X=1, Y=2.");
-    Parser parser(scanner);
-    parser.matchings();
-    Node *et = parser.expressionTree();
+    // s2(s(1,a),s1(s(1,a)))
+    Number n1(1);
+    Atom a1("a");
+    vector<Term *> v = {&n1, &a1};
+    Struct s(Atom("s"), v);
+    vector<Term *> v1 = {&s};
+    Struct s1(Atom("s1"), v1);
+    vector<Term *> v2 = {&s, &s1};
+    Struct s2(Atom("s2"), v2);
 
-    Iterator *it = et->createDFSIterator();
+    Iterator<Term *> *it = s2.createDFSIterator();
     it->first();
-
-    ASSERT_EQ(",", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("=", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("X", it->currentItem()->symbol());
+    ASSERT_EQ("s", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("=", it->currentItem()->symbol());
+    ASSERT_EQ("a", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("Y", it->currentItem()->symbol());
+    ASSERT_EQ("s1", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("2", it->currentItem()->symbol());
-    ASSERT_TRUE(it->isDone());
-}
-
-TEST(Iterator, DFS_ThreeTermsMatching1)
-{
-    Scanner scanner("X=1, Y=2, Z=3.");
-    Parser parser(scanner);
-    parser.matchings();
-    Node *et = parser.expressionTree();
-
-    Iterator *it = et->createDFSIterator();
-    it->first();
-
-    ASSERT_EQ(",", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("=", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("X", it->currentItem()->symbol());
+    ASSERT_EQ("s", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ(",", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("=", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("Y", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("2", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("=", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("Z", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("3", it->currentItem()->symbol());
+    ASSERT_EQ("a", it->currentItem()->symbol());
     ASSERT_TRUE(it->isDone());
 }
 
-TEST(Iterator, DFS_ThreeTermsMatching2)
+TEST(iterator, BFS_struct_1D)
 {
-    Scanner scanner("X=1, Y=2; Z=3.");
-    Parser parser(scanner);
-    parser.matchings();
-    Node *et = parser.expressionTree();
+    Number n1(1);
+    Atom a1("a");
+    vector<Term *> v = {&n1, &a1};
+    Struct s(Atom("s"), v);
 
-    Iterator *it = et->createDFSIterator();
+    Iterator<Term *> *it = s.createBFSIterator();
     it->first();
+    ASSERT_EQ("1", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("a", it->currentItem()->symbol());
+    ASSERT_TRUE(it->isDone());
+}
 
-    ASSERT_EQ(";", it->currentItem()->symbol());
+TEST(iterator, BFS_struct_3D)
+{
+    // s2(s(1,a),s1(s(1,a)))
+    Number n1(1);
+    Atom a1("a");
+    vector<Term *> v = {&n1, &a1};
+    Struct s(Atom("s"), v);
+    vector<Term *> v1 = {&s};
+    Struct s1(Atom("s1"), v1);
+    vector<Term *> v2 = {&s, &s1};
+    Struct s2(Atom("s2"), v2);
+
+    Iterator<Term *> *it = s2.createBFSIterator();
+    it->first();
+    ASSERT_EQ("s", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ(",", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("=", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("X", it->currentItem()->symbol());
+    ASSERT_EQ("s1", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("=", it->currentItem()->symbol());
+    ASSERT_EQ("a", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("Y", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("2", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("=", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("Z", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("3", it->currentItem()->symbol());
-    ASSERT_TRUE(it->isDone());
-}
-
-TEST(Iterator, DFS_ThreeTermsMatching3)
-{
-    Scanner scanner("X=1; X=2, Y=s(s(X)).");
-    Parser parser(scanner);
-    parser.matchings();
-    Node *et = parser.expressionTree();
-
-    Iterator *it = et->createDFSIterator();
-
-    it->first();
-    ASSERT_EQ(";", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("=", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("X", it->currentItem()->symbol());
+    ASSERT_EQ("s", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ(",", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("=", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("X", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("2", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("=", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("Y", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ("s(s(X))", it->currentItem()->symbol());
+    ASSERT_EQ("a", it->currentItem()->symbol());
     ASSERT_TRUE(it->isDone());
 }
 
-    TEST(Iterator, BFS_OneMatching) {
-      Scanner scanner("X=1.");
-      Parser parser(scanner);
-      parser.matchings();
-      Node * et = parser.expressionTree();
+TEST(iterator, DFS_list_1D)
+{
+    Number n1(1);
+    Atom a1("a");
+    vector<Term *> v = {&n1, &a1};
+    List l(v);
 
-      Iterator * it = et->createBFSIterator();
-      it->first();
+    Iterator<Term *> *it = l.createDFSIterator();
+    it->first();
+    ASSERT_EQ("1", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("a", it->currentItem()->symbol());
+    ASSERT_TRUE(it->isDone());
+}
 
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("X", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("1", it->currentItem()->symbol());
-      ASSERT_TRUE(it->isDone());
-    }
+TEST(iterator, DFS_list_3D)
+{
+    Number n1(1);
+    Atom a1("a");
+    vector<Term *> v = {&n1, &a1};
+    List l(v);
+    vector<Term *> v1 = {&l};
+    List l1(v1);
+    vector<Term *> v2 = {&l, &l1};
+    List l2(v2);
 
-    TEST(Iterator, BFS_TwoTermsMatching) {
-      Scanner scanner("X=1, Y=2.");
-      Parser parser(scanner);
-      parser.matchings();
-      Node * et = parser.expressionTree();
+    Iterator<Term *> *it = l2.createDFSIterator();
+    it->first();
+    ASSERT_EQ("[]", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("1", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("a", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("[]", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("[]", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("1", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("a", it->currentItem()->symbol());
+    ASSERT_TRUE(it->isDone());
+}
 
-      Iterator * it = et->createBFSIterator();
-      it->first();
+TEST(iterator, BFS_list_1D)
+{
+    Number n1(1);
+    Atom a1("a");
+    vector<Term *> v = {&n1, &a1};
+    List l(v);
 
-      ASSERT_EQ(",", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("X", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("1", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("Y", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("2", it->currentItem()->symbol());
-      ASSERT_TRUE(it->isDone());
-    }
+    Iterator<Term *> *it = l.createBFSIterator();
+    it->first();
+    ASSERT_EQ("1", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("a", it->currentItem()->symbol());
+    ASSERT_TRUE(it->isDone());
+}
 
-    TEST(Iterator, BFS_ThreeTermsMatching1) {
-      Scanner scanner("X=1, Y=2, Z=3.");
-      Parser parser(scanner);
-      parser.matchings();
-      Node * et = parser.expressionTree();
+TEST(iterator, BFS_list_3D)
+{
+    Number n1(1);
+    Atom a1("a");
+    vector<Term *> v = {&n1, &a1};
+    List l(v);
+    vector<Term *> v1 = {&l};
+    List l1(v1);
+    vector<Term *> v2 = {&l, &l1};
+    List l2(v2);
 
-      Iterator * it = et->createBFSIterator();
-
-      it->first();
-      ASSERT_EQ(",", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ(",", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("X", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("1", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("Y", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("2", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("Z", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("3", it->currentItem()->symbol());
-      ASSERT_TRUE(it->isDone());
-    }
-
-    TEST(Iterator, BFS_ThreeTermsMatching2) {
-      Scanner scanner("X=1, Y=2; Z=3.");
-      Parser parser(scanner);
-      parser.matchings();
-      Node * et = parser.expressionTree();
-
-      Iterator * it = et->createBFSIterator();
-      it->first();
-
-      ASSERT_EQ(";", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ(",", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("Z", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("3", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("X", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("1", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("Y", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("2", it->currentItem()->symbol());
-      ASSERT_TRUE(it->isDone());
-    }
-
-    TEST(Iterator, BFS_ThreeTermsMatching3) {
-      Scanner scanner("X=1; X=2, Y=s(s(X)).");
-      Parser parser(scanner);
-      parser.matchings();
-      Node * et = parser.expressionTree();
-
-      Iterator * it = et->createBFSIterator();
-
-      it->first();
-      ASSERT_EQ(";", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ(",", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("X", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("1", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("X", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("2", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("Y", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("s(s(X))", it->currentItem()->symbol());
-      ASSERT_TRUE(it->isDone());
-    }
+    Iterator<Term *> *it = l2.createBFSIterator();
+    it->first();
+    ASSERT_EQ("[]", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("[]", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("1", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("a", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("[]", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("1", it->currentItem()->symbol());
+    it->next();
+    ASSERT_EQ("a", it->currentItem()->symbol());
+    ASSERT_TRUE(it->isDone());
+}
 
 #endif

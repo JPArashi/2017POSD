@@ -2,14 +2,17 @@
 #define LIST_H
 
 #include "term.h"
+#include "atom.h"
 #include <vector>
 
 using std::vector;
+template <class T>
 class Iterator;
 
 class List : public Term
 {
   public:
+    Atom &name() { return *new Atom("[]"); }
     string symbol() const
     {
         string ret = "[";
@@ -74,7 +77,9 @@ class List : public Term
     int arity() { return _elements.size(); }
     Term *args(int index) { return _elements[index]; }
     List *getList() { return this; }
-    Iterator *createIterator();
+    Iterator<Term *> *createIterator();
+    Iterator<Term *> *createDFSIterator();
+    Iterator<Term *> *createBFSIterator();
 
   public:
     List() : _elements() {}

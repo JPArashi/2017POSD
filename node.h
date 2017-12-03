@@ -2,8 +2,6 @@
 #define NODE_H
 #include "term.h"
 
-class iterator;
-
 enum Operators
 {
     SEMICOLON,
@@ -39,9 +37,6 @@ class Node
             return false;
         }
     }
-
-    Iterator *createDFSIterator();
-    Iterator *createBFSIterator();
 
     Operators payload;
     Term *term;

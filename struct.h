@@ -7,6 +7,7 @@
 #include <string>
 
 using std::string;
+template <class T>
 class Iterator;
 
 class Struct : public Term
@@ -18,7 +19,7 @@ class Struct : public Term
     int arity() { return _args.size(); }
     Term *args(int index) { return _args[index]; }
 
-    Atom const &name() { return _name; }
+    Atom &name() { return _name; }
 
     string symbol() const
     {
@@ -77,7 +78,9 @@ class Struct : public Term
 
     bool match(Variable &var) { return var.match(*this); }
     Struct *getStruct() { return this; }
-    Iterator *createIterator();
+    Iterator<Term *> *createIterator();
+    Iterator<Term *> *createDFSIterator();
+    Iterator<Term *> *createBFSIterator();
 
   private:
     Atom _name;

@@ -2,7 +2,7 @@ HW_NAME = hw7
 HEADER_FILE = atom.h variable.h struct.h number.h term.h \
 		      list.h scanner.h parser.h global.h node.h  \
 			  iterator.h
-OBJECT_FILE = term.o struct.o list.o node.o
+OBJECT_FILE = term.o struct.o list.o
 UNIT_TEST_FILE = utIterator.h
 
 
@@ -26,9 +26,6 @@ struct.o: struct.h struct.cpp iterator.h
 
 list.o: list.h list.cpp iterator.h
 	g++ -std=gnu++0x -c list.cpp
-
-node.o: node.h node.cpp iterator.h
-	g++ -std=gnu++0x -c node.cpp
 
 clean:	
 ifeq (${OS}, Windows_NT)

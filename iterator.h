@@ -1,6 +1,7 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
 
+#include <iostream>
 #include "struct.h"
 #include "list.h"
 #include "node.h"
@@ -10,6 +11,7 @@
 using std::queue;
 using std::stack;
 
+template <class T>
 class Iterator
 {
   public:
@@ -19,7 +21,8 @@ class Iterator
     virtual bool isDone() const = 0;
 };
 
-class NullIterator : public Iterator
+template <class T>
+class NullIterator : public Iterator<T>
 {
   public:
     NullIterator(Term *n) {}
@@ -35,7 +38,8 @@ class NullIterator : public Iterator
     }
 };
 
-class StructIterator : public Iterator
+template <class T>
+class StructIterator : public Iterator<T>
 {
   public:
     StructIterator(Struct *s) : _index(0), _s(s) {}
@@ -64,7 +68,8 @@ class StructIterator : public Iterator
     Struct *_s;
 };
 
-class ListIterator : public Iterator
+template <class T>
+class ListIterator : public Iterator<T>
 {
   public:
     ListIterator(List *list) : _index(0), _list(list) {}
@@ -94,109 +99,113 @@ class ListIterator : public Iterator
     List *_list;
 };
 
-class DFSIterator : public Iterator
+template <class T>
+class DFSIterator : public Iterator<T>
 {
   public:
-    DFSIterator(Node *node) : _node(node) {}
+    DFSIterator(T t) : _t(t) {}
 
     void first()
     {
-        _nowNode = _node;
-        while (!_nodes.empty())
+        _nowT = _t;
+        while (!_ts.empty())
         {
-            _nodes.pop();
+            _ts.pop();
         }
 
-        if (_nowNode->right)
+        for (int i = (int)_nowT->arity() - 1; i >= 0; i--)
         {
-            _nodes.push(_nowNode->right);
+            _ts.push(_nowT->args(i));
         }
-        if (_nowNode->left)
+
+        if (!_ts.empty())
         {
-            _nodes.push(_nowNode->left);
+            next();
         }
     }
 
     Term *currentItem() const
     {
-        return _nowNode->term;
+        return _nowT;
     }
 
     bool isDone() const
     {
-        return _nodes.empty();
+        return _ts.empty();
     }
 
     void next()
     {
-        _nowNode = _nodes.top();
-        _nodes.pop();
-        if (_nowNode->right)
+        _nowT = _ts.top();
+        _ts.pop();
+        for (int i = (int)_nowT->arity() - 1; i >= 0; i--)
         {
-            _nodes.push(_nowNode->right);
+            _ts.push(_nowT->args(i));
         }
-        if (_nowNode->left)
+        if (_nowT->name().symbol() != "")
         {
-            _nodes.push(_nowNode->left);
+            _nowT = &_nowT->name();
         }
     }
 
   private:
-    Node *_node;
-    stack<Node *> _nodes;
-    Node *_nowNode;
+    T _t;
+    stack<T> _ts;
+    T _nowT;
 };
 
-class BFSIterator : public Iterator
+template <class T>
+class BFSIterator : public Iterator<T>
 {
   public:
-    BFSIterator(Node *node) : _node(node) {}
+    BFSIterator(T t) : _t(t) {}
 
     void first()
     {
-        _nowNode = _node;
-        while (!_nodes.empty())
+        _nowT = _t;
+        while (!_ts.empty())
         {
-            _nodes.pop();
+            _ts.pop();
         }
 
-        if (_nowNode->left)
+        for (int i = 0; i < (int)_nowT->arity(); i++)
         {
-            _nodes.push(_nowNode->left);
+            _ts.push(_nowT->args(i));
         }
-        if (_nowNode->right)
+
+        if (!_ts.empty())
         {
-            _nodes.push(_nowNode->right);
+            next();
         }
     }
 
     Term *currentItem() const
     {
-        return _nowNode->term;
+        return _nowT;
     }
 
     bool isDone() const
     {
-        return _nodes.empty();
+        return _ts.empty();
     }
 
     void next()
     {
-        _nowNode = _nodes.front();
-        _nodes.pop();
-        if (_nowNode->left)
+        _nowT = _ts.front();
+        _ts.pop();
+        for (int i = 0; i < (int)_nowT->arity(); i++)
         {
-            _nodes.push(_nowNode->left);
+            _ts.push(_nowT->args(i));
         }
-        if (_nowNode->right)
+        if (_nowT->name().symbol() != "")
         {
-            _nodes.push(_nowNode->right);
+            _nowT = &_nowT->name();
         }
     }
 
   private:
-    Node *_node;
-    queue<Node *> _nodes;
-    Node *_nowNode;
+    T _t;
+    queue<T> _ts;
+    T _nowT;
 };
 #endif
