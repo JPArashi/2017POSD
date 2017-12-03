@@ -6,21 +6,26 @@
 #include <string>
 using std::string;
 
-class Atom : public Term {
-public:
-  Atom(string s) : _symbol(s) {}
+class Atom : public Term
+{
+  public:
+    Atom(string s) : _symbol(s) {}
 
-  string symbol() const { return _symbol; }
+    string symbol() const { return _symbol; }
 
-  string _symbol;
+    string _symbol;
 
-  bool match(Term &term) {
-    if (term.getVariable()) {
-      return term.match(*this);
-    } else {
-      return value() == term.value();
+    bool match(Term &term)
+    {
+        if (term.getVariable())
+        {
+            return term.match(*this);
+        }
+        else
+        {
+            return value() == term.value();
+        }
     }
-  }
 };
 
 #endif

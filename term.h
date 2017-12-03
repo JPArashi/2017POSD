@@ -7,8 +7,10 @@ using std::string;
 class Struct;
 class Variable;
 class List;
+class Iterator;
 
-class Term {
+class Term
+{
 public:
   virtual string symbol() const = 0;
 
@@ -19,6 +21,7 @@ public:
   virtual Struct *getStruct() { return NULL; }
   virtual Variable *getVariable() { return NULL; }
   virtual List *getList() { return NULL; }
+  virtual Iterator *createIterator();
 };
 
 #endif

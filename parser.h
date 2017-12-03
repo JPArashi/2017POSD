@@ -12,8 +12,6 @@ using std::string;
 #include "number.h"
 #include "node.h"
 
-#include "utParser.h"
-
 class Parser
 {
   public:
@@ -111,7 +109,7 @@ class Parser
         if (currentChar == ';')
         {
             _subTreeTermsTable.clear();
-            tempTree = new Node(SEMICOLON, nullptr, nullptr, nullptr);
+            tempTree = new Node(SEMICOLON, new Atom(";"), nullptr, nullptr);
             // root priority > comma, root still root.
             if (root && SEMICOLON >= root->payload)
             {
@@ -126,7 +124,7 @@ class Parser
         }
         else if (currentChar == ',')
         {
-            tempTree = new Node(COMMA, nullptr, nullptr, nullptr);
+            tempTree = new Node(COMMA, new Atom(","), nullptr, nullptr);
             // root priority > comma, root still root.
             if (root && COMMA >= root->payload)
             {
@@ -144,7 +142,7 @@ class Parser
             term = checkTermExistSubTree(term);
             Node *tempNode = new Node(TERM, checkTermExistSubTree(term), nullptr, nullptr);
             _terms.push_back(term);
-            tempTree = new Node(EQUALITY, nullptr, tempNode, nullptr);
+            tempTree = new Node(EQUALITY, new Atom("="), tempNode, nullptr);
             term = checkTermExistSubTree(createTerm());
             tempTree->right = new Node(TERM, term, nullptr, nullptr);
             _terms.push_back(term);
