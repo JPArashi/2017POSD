@@ -142,10 +142,10 @@ class DFSIterator : public Iterator<T>
         {
             _ts.push(_nowT->args(i));
         }
-        if (_nowT->name().symbol() != "")
-        {
-            _nowT = &_nowT->name();
-        }
+        // if (_nowT->name().symbol() != "")
+        // {
+        //     _nowT = &_nowT->name();
+        // }
     }
 
   private:
@@ -197,10 +197,10 @@ class BFSIterator : public Iterator<T>
         {
             _ts.push(_nowT->args(i));
         }
-        if (_nowT->name().symbol() != "")
-        {
-            _nowT = &_nowT->name();
-        }
+        // if (_nowT->name().symbol() != "")
+        // {
+        //     _nowT = &_nowT->name();
+        // }
     }
 
   private:

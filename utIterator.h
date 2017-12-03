@@ -40,15 +40,15 @@ TEST(iterator, DFS_struct_3D)
 
     Iterator<Term *> *it = s2.createDFSIterator();
     it->first();
-    ASSERT_EQ("s", it->currentItem()->symbol());
+    ASSERT_EQ("s(1, a)", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("a", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("s1", it->currentItem()->symbol());
+    ASSERT_EQ("s1(s(1, a))", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("s", it->currentItem()->symbol());
+    ASSERT_EQ("s(1, a)", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
     it->next();
@@ -85,15 +85,15 @@ TEST(iterator, BFS_struct_3D)
 
     Iterator<Term *> *it = s2.createBFSIterator();
     it->first();
-    ASSERT_EQ("s", it->currentItem()->symbol());
+    ASSERT_EQ("s(1, a)", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("s1", it->currentItem()->symbol());
+    ASSERT_EQ("s1(s(1, a))", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("a", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("s", it->currentItem()->symbol());
+    ASSERT_EQ("s(1, a)", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
     it->next();
@@ -129,15 +129,15 @@ TEST(iterator, DFS_list_3D)
 
     Iterator<Term *> *it = l2.createDFSIterator();
     it->first();
-    ASSERT_EQ("[]", it->currentItem()->symbol());
+    ASSERT_EQ("[1, a]", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("a", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("[]", it->currentItem()->symbol());
+    ASSERT_EQ("[[1, a]]", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("[]", it->currentItem()->symbol());
+    ASSERT_EQ("[1, a]", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
     it->next();
@@ -173,15 +173,15 @@ TEST(iterator, BFS_list_3D)
 
     Iterator<Term *> *it = l2.createBFSIterator();
     it->first();
-    ASSERT_EQ("[]", it->currentItem()->symbol());
+    ASSERT_EQ("[1, a]", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("[]", it->currentItem()->symbol());
+    ASSERT_EQ("[[1, a]]", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("a", it->currentItem()->symbol());
     it->next();
-    ASSERT_EQ("[]", it->currentItem()->symbol());
+    ASSERT_EQ("[1, a]", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
     it->next();
