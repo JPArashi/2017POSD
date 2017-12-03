@@ -136,16 +136,15 @@ class DFSIterator : public Iterator<T>
 
     void next()
     {
-        _nowT = _ts.top();
-        _ts.pop();
-        for (int i = (int)_nowT->arity() - 1; i >= 0; i--)
+        if (!isDone())
         {
-            _ts.push(_nowT->args(i));
+            _nowT = _ts.top();
+            _ts.pop();
+            for (int i = (int)_nowT->arity() - 1; i >= 0; i--)
+            {
+                _ts.push(_nowT->args(i));
+            }
         }
-        // if (_nowT->name().symbol() != "")
-        // {
-        //     _nowT = &_nowT->name();
-        // }
     }
 
   private:
@@ -191,16 +190,15 @@ class BFSIterator : public Iterator<T>
 
     void next()
     {
-        _nowT = _ts.front();
-        _ts.pop();
-        for (int i = 0; i < (int)_nowT->arity(); i++)
+        if (!isDone())
         {
-            _ts.push(_nowT->args(i));
+            _nowT = _ts.front();
+            _ts.pop();
+            for (int i = 0; i < (int)_nowT->arity(); i++)
+            {
+                _ts.push(_nowT->args(i));
+            }
         }
-        // if (_nowT->name().symbol() != "")
-        // {
-        //     _nowT = &_nowT->name();
-        // }
     }
 
   private:
