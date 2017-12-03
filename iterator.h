@@ -1,7 +1,6 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
 
-#include <iostream>
 #include "struct.h"
 #include "list.h"
 #include "node.h"
@@ -164,12 +163,10 @@ class BFSIterator : public Iterator
         if (_nowNode->left)
         {
             _nodes.push(_nowNode->left);
-            std::cout << _nowNode->left->term->symbol() << "|";
         }
         if (_nowNode->right)
         {
             _nodes.push(_nowNode->right);
-            std::cout << _nowNode->right->term->symbol() << "|";
         }
     }
 
@@ -190,12 +187,10 @@ class BFSIterator : public Iterator
         if (_nowNode->left)
         {
             _nodes.push(_nowNode->left);
-            std::cout << _nowNode->left->term->symbol() << "|";
         }
         if (_nowNode->right)
         {
             _nodes.push(_nowNode->right);
-            std::cout << _nowNode->right->term->symbol() << "|";
         }
     }
 

@@ -176,6 +176,8 @@ TEST(Iterator, DFS_ThreeTermsMatching2)
     Iterator *it = et->createDFSIterator();
     it->first();
 
+    ASSERT_EQ(";", it->currentItem()->symbol());
+    it->next();
     ASSERT_EQ(",", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("=", it->currentItem()->symbol());
@@ -183,8 +185,6 @@ TEST(Iterator, DFS_ThreeTermsMatching2)
     ASSERT_EQ("X", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("1", it->currentItem()->symbol());
-    it->next();
-    ASSERT_EQ(";", it->currentItem()->symbol());
     it->next();
     ASSERT_EQ("=", it->currentItem()->symbol());
     it->next();
@@ -318,27 +318,27 @@ TEST(Iterator, DFS_ThreeTermsMatching3)
       Iterator * it = et->createBFSIterator();
       it->first();
 
+      ASSERT_EQ(";", it->currentItem()->symbol());
+      it->next();
       ASSERT_EQ(",", it->currentItem()->symbol());
       it->next();
       ASSERT_EQ("=", it->currentItem()->symbol());
       it->next();
-      ASSERT_EQ(";", it->currentItem()->symbol());
+      ASSERT_EQ("=", it->currentItem()->symbol());
+      it->next();
+      ASSERT_EQ("=", it->currentItem()->symbol());
+      it->next();
+      ASSERT_EQ("Z", it->currentItem()->symbol());
+      it->next();
+      ASSERT_EQ("3", it->currentItem()->symbol());
       it->next();
       ASSERT_EQ("X", it->currentItem()->symbol());
       it->next();
       ASSERT_EQ("1", it->currentItem()->symbol());
       it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("=", it->currentItem()->symbol());
-      it->next();
       ASSERT_EQ("Y", it->currentItem()->symbol());
       it->next();
       ASSERT_EQ("2", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("Z", it->currentItem()->symbol());
-      it->next();
-      ASSERT_EQ("3", it->currentItem()->symbol());
       ASSERT_TRUE(it->isDone());
     }
 
