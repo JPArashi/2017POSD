@@ -4,7 +4,6 @@
 #include <string>
 
 using std::string;
-class Atom;
 class Struct;
 class Variable;
 class List;
@@ -24,7 +23,6 @@ class Term
     virtual List *getList() { return NULL; }
     virtual int arity() { return 0; }
     virtual Term *args(int index) { return nullptr; }
-    virtual Atom &name();
     virtual Iterator<Term *> *createIterator();
     virtual Iterator<Term *> *createDFSIterator();
     virtual Iterator<Term *> *createBFSIterator();

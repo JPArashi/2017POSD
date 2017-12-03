@@ -2,7 +2,6 @@
 #define LIST_H
 
 #include "term.h"
-#include "atom.h"
 #include <vector>
 
 using std::vector;
@@ -12,7 +11,6 @@ class Iterator;
 class List : public Term
 {
   public:
-    Atom &name() { return *new Atom("[]"); }
     string symbol() const
     {
         string ret = "[";
