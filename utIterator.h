@@ -11,6 +11,90 @@
 #include <vector>
 using std::vector;
 
+TEST(iterator, createDFSIterator1)
+{
+    Number n1(1);
+    Atom a1("a");
+    vector<Term *> v = {&n1, &a1};
+    Struct s(Atom("s"), v);
+
+    Iterator<Term *> *it = s.createDFSIterator();
+    it->first();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_TRUE(it->isDone());
+}
+
+TEST(iterator, createDFSIterator2)
+{
+    Number n1(1);
+    Atom a1("a");
+    vector<Term *> v = {&n1, &a1};
+    Struct s(Atom("s"), v);
+    vector<Term *> v1 = {&s};
+    Struct s1(Atom("s1"), v1);
+    vector<Term *> v2 = {&s, &s1};
+    Struct s2(Atom("s2"), v2);
+
+    Iterator<Term *> *it = s2.createDFSIterator();
+    it->first();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_TRUE(it->isDone());
+}
+
+TEST(iterator, createBFSIterator1)
+{
+    Number n1(1);
+    Atom a1("a");
+    vector<Term *> v = {&n1, &a1};
+    Struct s(Atom("s"), v);
+
+    Iterator<Term *> *it = s.createBFSIterator();
+    it->first();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_TRUE(it->isDone());
+}
+
+TEST(iterator, createBFSIterator2)
+{
+    Number n1(1);
+    Atom a1("a");
+    vector<Term *> v = {&n1, &a1};
+    Struct s(Atom("s"), v);
+    vector<Term *> v1 = {&s};
+    Struct s1(Atom("s1"), v1);
+    vector<Term *> v2 = {&s, &s1};
+    Struct s2(Atom("s2"), v2);
+
+    Iterator<Term *> *it = s2.createBFSIterator();
+    it->first();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_FALSE(it->isDone());
+    it->next();
+    ASSERT_TRUE(it->isDone());
+}
+
 TEST(iterator, DFS_struct_1D)
 {
     Number n1(1);
