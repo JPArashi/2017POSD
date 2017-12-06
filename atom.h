@@ -12,7 +12,6 @@ class Atom : public Term
     Atom(string s) : _symbol(s) {}
 
     string symbol() const { return _symbol; }
-
     string _symbol;
 
     bool match(Term &term)
