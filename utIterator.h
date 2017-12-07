@@ -11,88 +11,77 @@
 #include <vector>
 using std::vector;
 
-TEST(iterator, createDFSIterator1)
+TEST(iterator, first)
 {
-    Number n1(1);
-    Atom a1("a");
-    vector<Term *> v = {&n1, &a1};
-    Struct s(Atom("s"), v);
-
-    Iterator<Term *> *it = s.createDFSIterator();
-    it->first();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_TRUE(it->isDone());
+    Number one(1);
+    Variable X("X");
+    Variable Y("Y");
+    Number two(2);
+    Struct t(Atom("t"), {&X, &two});
+    Struct s(Atom("s"), {&one, &t, &Y});
+    Iterator<Term *> *itStruct = s.createIterator();
+    itStruct->first();
+    ASSERT_EQ("1", itStruct->currentItem()->symbol());
+    ASSERT_FALSE(itStruct->isDone());
+    itStruct->next();
+    ASSERT_EQ("t(X, 2)", itStruct->currentItem()->symbol());
+    ASSERT_FALSE(itStruct->isDone());
+    itStruct->next();
+    ASSERT_EQ("Y", itStruct->currentItem()->symbol());
+    itStruct->next();
+    ASSERT_TRUE(itStruct->isDone());
 }
 
-TEST(iterator, createDFSIterator2)
+TEST(iterator, nested_iterator)
 {
-    Number n1(1);
-    Atom a1("a");
-    vector<Term *> v = {&n1, &a1};
-    Struct s(Atom("s"), v);
-    vector<Term *> v1 = {&s};
-    Struct s1(Atom("s1"), v1);
-    vector<Term *> v2 = {&s, &s1};
-    Struct s2(Atom("s2"), v2);
-
-    Iterator<Term *> *it = s2.createDFSIterator();
+    Number one(1);
+    Variable X("X");
+    Variable Y("Y");
+    Number two(2);
+    Struct t(Atom("t"), {&X, &two});
+    Struct s(Atom("s"), {&one, &t, &Y});
+    Iterator<Term *> *it = s.createIterator();
     it->first();
-    ASSERT_FALSE(it->isDone());
     it->next();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_TRUE(it->isDone());
+    Struct *s2 = dynamic_cast<Struct *>(it->currentItem());
+    Iterator<Term *> *it2 = s2->createIterator();
+    it2->first();
+    ASSERT_EQ("X", it2->currentItem()->symbol());
+    ASSERT_FALSE(it2->isDone());
+    it2->next();
+    ASSERT_EQ("2", it2->currentItem()->symbol());
+    ASSERT_FALSE(it2->isDone());
+    it2->next();
+    ASSERT_TRUE(it2->isDone());
 }
 
-TEST(iterator, createBFSIterator1)
+TEST(iterator, firstList)
 {
-    Number n1(1);
-    Atom a1("a");
-    vector<Term *> v = {&n1, &a1};
-    Struct s(Atom("s"), v);
-
-    Iterator<Term *> *it = s.createBFSIterator();
-    it->first();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_TRUE(it->isDone());
+    Number one(1);
+    Variable X("X");
+    Variable Y("Y");
+    Number two(2);
+    Struct t(Atom("t"), {&X, &two});
+    List l({&one, &t, &Y});
+    Iterator<Term *> *itList = l.createIterator();
+    itList->first();
+    ASSERT_EQ("1", itList->currentItem()->symbol());
+    ASSERT_FALSE(itList->isDone());
+    itList->next();
+    ASSERT_EQ("t(X, 2)", itList->currentItem()->symbol());
+    ASSERT_FALSE(itList->isDone());
+    itList->next();
+    ASSERT_EQ("Y", itList->currentItem()->symbol());
+    itList->next();
+    ASSERT_TRUE(itList->isDone());
 }
 
-TEST(iterator, createBFSIterator2)
+TEST(iterator, NullIterator)
 {
-    Number n1(1);
-    Atom a1("a");
-    vector<Term *> v = {&n1, &a1};
-    Struct s(Atom("s"), v);
-    vector<Term *> v1 = {&s};
-    Struct s1(Atom("s1"), v1);
-    vector<Term *> v2 = {&s, &s1};
-    Struct s2(Atom("s2"), v2);
-
-    Iterator<Term *> *it = s2.createBFSIterator();
-    it->first();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_FALSE(it->isDone());
-    it->next();
-    ASSERT_TRUE(it->isDone());
+    Number one(1);
+    Iterator<Term *> *nullIterator = one.createIterator();
+    nullIterator->first();
+    ASSERT_TRUE(nullIterator->isDone());
 }
 
 TEST(iterator, DFS_struct_1D)
