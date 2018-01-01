@@ -2,6 +2,8 @@
 #define PARSER_H
 #include <string>
 using std::string;
+#include <stack>
+using std::stack;
 
 #include "atom.h"
 #include "variable.h"
@@ -11,6 +13,7 @@ using std::string;
 #include "list.h"
 #include "number.h"
 #include "node.h"
+
 
 class Parser
 {
@@ -61,7 +64,7 @@ class Parser
         }
         else
         {
-            throw string("unexpected token");
+            throw string("Unbalanced operator");
         }
     }
 
@@ -77,7 +80,7 @@ class Parser
         }
         else
         {
-            throw string("unexpected token");
+            throw string("Unbalanced operator");
         }
     }
 
@@ -91,10 +94,37 @@ class Parser
         _tree = buildExpressionTree(NULL);
     }
 
+    void buildExpression()
+    {
+        _tree = buildExpressionTree(NULL);
+        if(_tree->payload == TERM)
+            throw string(_tree->term->symbol() +" does never get assignment");
+
+        stack<Node *> DFSNodeStack;
+        DFSNodeStack.push(_tree);
+        while(!DFSNodeStack.empty()){
+            Node *tempRoot = DFSNodeStack.top();
+            DFSNodeStack.pop();
+            if(tempRoot->payload != TERM){
+                if(!tempRoot->right || !tempRoot->left){
+                    throw string("Unexpected '" + tempRoot->operatorsEnumToString(tempRoot->payload) + "' before '.'");
+                }
+                if(tempRoot->payload == EQUALITY){
+                    if(tempRoot->left->payload != TERM)
+                       throw string(tempRoot->left->term->symbol() +" does never get assignment");
+                    if(tempRoot->right->payload != TERM)
+                       throw string(tempRoot->right->term->symbol() +" does never get assignment");
+                }
+            }
+        }
+    }
+
     Node *buildExpressionTree(Node *root)
     {
         if (_scanner.currentChar() == '.')
             return root;
+        if (_scanner.skipLeadingWhiteSpace() >=_scanner.buffer.length())
+            throw string("Missing token '.'");  
         Term *term = NULL;
         Node *tempTree = NULL;
         char currentChar = _scanner.currentChar();
@@ -103,9 +133,16 @@ class Parser
               currentChar == '='))
         {
             term = createTerm();
+            _scanner.skipLeadingWhiteSpace();
             currentChar = _scanner.currentChar();
         }
-        _scanner.extractChar();
+        if (currentChar == ';' ||
+            currentChar == ',' ||
+            currentChar == '=')
+        {
+            _scanner.extractChar();
+        }
+        
         if (currentChar == ';')
         {
             _subTreeTermsTable.clear();
@@ -156,6 +193,22 @@ class Parser
                 return buildExpressionTree(tempTree);
             }
         }
+        else
+        {
+            term = checkTermExistSubTree(term);
+            Node *tempTree = new Node(TERM, checkTermExistSubTree(term), nullptr, nullptr);
+            _terms.push_back(term);
+            if (root)
+            {
+                addNodeToSubTree(root, tempTree);
+                return buildExpressionTree(root);
+            }
+            else
+            {
+                return buildExpressionTree(tempTree);
+            }
+        }
+        return NULL;
     }
 
     void addNodeToSubTree(Node *root, Node *subTree)
@@ -212,6 +265,14 @@ class Parser
                 createExistSubTreeTable(s->args(i));
             }
         }
+        List *l = dynamic_cast<List *>(term);
+        if (l)
+        {
+            for (int i = 0; i < (int)l->arity(); i++)
+            {
+                createExistSubTreeTable(l->args(i));
+            }
+        }
         Variable *v = dynamic_cast<Variable *>(term);
         if (v)
         {
@@ -256,5 +317,6 @@ class Parser
     Scanner _scanner;
     int _currentToken;
     Node *_tree;
+    
 };
 #endif

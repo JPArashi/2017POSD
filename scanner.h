@@ -79,9 +79,10 @@ public:
   char extractChar() {
     return buffer[pos++];
   }
+  string buffer;
 
 private:
-  string buffer;
+  
   int pos;
   int _tokenValue;
 

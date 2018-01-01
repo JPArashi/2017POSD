@@ -1,12 +1,12 @@
-HW_NAME = hw7
+HW_NAME = hw8
 HEADER_FILE = atom.h variable.h struct.h number.h term.h \
 		      list.h scanner.h parser.h global.h node.h  \
-			  iterator.h
-OBJECT_FILE = term.o struct.o list.o
-UNIT_TEST_FILE = utIterator.h
+			  iterator.h exception.h expression.h
+OBJECT_FILE = term.o struct.o list.o node.o
+UNIT_TEST_FILE = exception.h expression.h
 
 
-all: $(HW_NAME)
+all: $(HW_NAME) #shell
 
 ${HW_NAME}: main.o
 ifeq (${OS}, Windows_NT)
@@ -26,6 +26,9 @@ struct.o: struct.h struct.cpp iterator.h
 
 list.o: list.h list.cpp iterator.h
 	g++ -std=gnu++0x -c list.cpp
+
+node.o: node.h node.cpp
+	g++ -std=gnu++0x -c node.cpp
 
 clean:	
 ifeq (${OS}, Windows_NT)

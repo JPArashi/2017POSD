@@ -1,46 +1,41 @@
 # POSD2017F Homework
 
-## Homework assignment 7
+## Homework assignment 8
 
 Please use [the files that were used in course](https://github.com/yccheng66/posd2017f) and copy test header to your repository from this project.
 
-In this time, you have to design your tests for the iterator of `Struct` and `List`. A structure contains several terms, it can be expanded into a tree structure like the picture below. We will make two kinds of way to traverse the structure, the first is [deep-first search](https://en.wikipedia.org/wiki/Depth-first_search), and the second is [breadth-first search](https://en.wikipedia.org/wiki/Breadth-first_search). When traversing the structure, iterator gets each item in structure orderly.
+In this time, you need to make a `Shell` to wrapper the program that we made before. It should handle user input and put the input into program, then show the corresponding result. And in some situation, you will need to improve your program to handle the exception if wrong expression.
 
-You need to design the tests to test your iterator, the function signature of iterator and its usage must follow the way that defined on the course. There is also ours tests to test your program on the CI server (.ut job). 
-
-## Chagne history
-
-12/03
-
-first() in our example should return bigmac not combo1.
-
-![Imgur](https://i.imgur.com/v1GyjBX.png)
 
 #### Assignment requirement
 
-  1. Redo the creation of iterator, use aggregate(e.g. `Struct`) to create iterator instead of client, and re-write the test of that.
+  1. This assignment doesn't limit how you implement the shell, but you must ensure that your shell conforms to the following requirements.
+      * The shell should provide some functions written in `shell.md`.
 
-  2.  As we can handle difference type on function through *template\<T>*, make the template on `Iterator` so it can handle the type other than `Term`.
-
-  3. Design test for the iterator by yourself. The function signature and usage is not allow to change. 
-     
-     * Two kind of way for traversing: Deep-first search, Breadth-first search, so there will be two methods on the aggregate: `createBFSIterator`, `createDFSIterator`.
-
-     * You need to design 2 test data for each type, `Struct` and `List`, and use BFS and DFS to traverse each test data. So it totally has 8 tests.
+      * Handle the expressions written in `expression.h`, and show corresponding result.
  
-  4. Write the corresponding makefile to generate executable file which named `hw7`. Note that it is the executable name, not the test file name.
+      * Handle the exceptions written in `exception.h`, and show corresponding result.
 
-  5. Make sure your CI job is passed before deadline.
+      * Shell shouldn't crash if something goes wrong.
+
+  2. Design suitable unit test for all implementations that you write for this assignment.
+
+  3. Write the corresponding makefile to generate executable file which named `hw8`. This is for executing the test on CI server.
+
+  4. Write the corresponding makefile to generate executable file which named `shell`. This is for executing the shell.
+
+  5. Make sure your CI job is passed before deadline.s
 
 #### Marks
 
-  You totally have 12 tests, include the test written on the course. Each one is 5 points.
-  And we will have 8 tests, each one is also 5 points.
-  The sum score of assignment is 100 points.
+  There are 29 tests in `expression.h` and `exception.h`, each one is 3 points; 3 functions written in `shell.md`, each one is 4 points.
+  For easier calculating, the sum score of assignment is 100 points.
+
+  If Shell crash, total points deducted 10 points.
 
 #### Deadline
 
-  Fri Dec 8 2017 23:59:59
+  Fri Jan 05 2018 23:59:59
 
 #### Note
 
