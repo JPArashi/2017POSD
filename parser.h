@@ -294,11 +294,6 @@ class Parser
     }
 
   private:
-    FRIEND_TEST(ParserTest, createArgs);
-    FRIEND_TEST(ParserTest, ListOfTermsEmpty);
-    FRIEND_TEST(ParserTest, listofTermsTwoNumber);
-    FRIEND_TEST(ParserTest, createTerm_nestedStruct3);
-
     void createTerms()
     {
         Term *term = createTerm();

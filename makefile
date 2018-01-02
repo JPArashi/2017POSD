@@ -1,4 +1,6 @@
+HW_FILE_NAME = mainTest
 HW_NAME = hw8
+SHELL_FILE_NAME = main
 HEADER_FILE = atom.h variable.h struct.h number.h term.h \
 		      list.h scanner.h parser.h global.h node.h  \
 			  iterator.h exception.h expression.h
@@ -6,17 +8,27 @@ OBJECT_FILE = term.o struct.o list.o node.o
 UNIT_TEST_FILE = exception.h expression.h
 
 
-all: $(HW_NAME) #shell
+all: $(HW_NAME) shell
 
-${HW_NAME}: main.o
-ifeq (${OS}, Windows_NT)
-	g++ -o $(HW_NAME) main.o $(OBJECT_FILE) -lgtest
+shell: $(SHELL_FILE_NAME).o
+ifeq ($(OS), Windows_NT)
+	g++ -o shell $(SHELL_FILE_NAME).o $(OBJECT_FILE) -lgtest
 else
-	g++ -o $(HW_NAME) main.o $(OBJECT_FILE) -lgtest -lpthread
+	g++ -o shell $(SHELL_FILE_NAME).o $(OBJECT_FILE) -lgtest -lpthread
 endif
 
-main.o: main.cpp $(HEADER_FILE) $(UNIT_TEST_FILE) $(OBJECT_FILE)
-	g++ -std=gnu++0x -c main.cpp
+$(SHELL_FILE_NAME).o: $(SHELL_FILE_NAME).cpp $(HEADER_FILE) $(OBJECT_FILE)
+	g++ -std=gnu++0x -c $(SHELL_FILE_NAME).cpp
+
+$(HW_NAME): $(HW_FILE_NAME).o
+ifeq ($(OS), Windows_NT)
+	g++ -o $(HW_NAME) $(HW_FILE_NAME).o $(OBJECT_FILE) -lgtest
+else
+	g++ -o $(HW_NAME) $(HW_FILE_NAME).o $(OBJECT_FILE) -lgtest -lpthread
+endif
+
+$(HW_FILE_NAME).o: $(HW_FILE_NAME).cpp $(HEADER_FILE) $(UNIT_TEST_FILE) $(OBJECT_FILE)
+	g++ -std=gnu++0x -c $(HW_FILE_NAME).cpp
 
 term.o: term.h term.cpp iterator.h
 	g++ -std=gnu++0x -c term.cpp
@@ -31,8 +43,8 @@ node.o: node.h node.cpp
 	g++ -std=gnu++0x -c node.cpp
 
 clean:	
-ifeq (${OS}, Windows_NT)
+ifeq ($(OS), Windows_NT)
 	del *.o *.exe
 else
-	rm -f *.o $(HW_NAME)
+	rm -f *.o $(HW_NAME) shell
 endif
