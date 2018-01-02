@@ -1,10 +1,3 @@
-/**
- * 
- * Here are some examples for exception handling,
- * the actual testing way is base on your implementation.
- * 
- */
-
 #ifndef EXPRESSION_H
 #define EXPRESSION_H
 
@@ -309,7 +302,7 @@ TEST(Shell, disjunctionMatching3) {
     Node *expressionTree = p.expressionTree();
     expressionTree->evaluate();
     string result = expressionTree->getResult();
-    ASSERT_EQ("X = 1; X = 1, Y = 2.",result);
+    ASSERT_EQ("X = 1; X = 1, Y = 2.", result);
   } catch (std::string &msg) {
     FAIL() << msg;
   }
@@ -337,7 +330,7 @@ TEST(Shell, disjunctionMatching5) {
     Node *expressionTree = p.expressionTree();
     expressionTree->evaluate();
     string result = expressionTree->getResult();
-    ASSERT_EQ("X = 1; Y = 2.", result);
+    ASSERT_EQ("X = 1; true; Y = 2.", result);
   } catch (std::string &msg) {
     FAIL() << msg;
   }
@@ -356,22 +349,5 @@ TEST(Shell, disjunctionMatching6) {
     FAIL() << msg;
   }
 }
-
-
-// TEST(Shell, exceptionMissingPeriodToken) {
-//   Scanner s("X=1");
-//   Parser p(s);
-//   try {
-//     p.buildExpression();
-    
-//      /**
-//      *  maybe your implementation here.
-//      */
-    
-//     FAIL() << "It should throw an exception: Missing token '.'";
-//   } catch (std::string &msg) {
-//     ASSERT_EQ("Missing token '.'", msg);
-//   }
-// }
 
 #endif

@@ -1,10 +1,3 @@
-/**
- * 
- * Here are some examples for exception handling,
- * the actual testing way is base on your implementation.
- * 
- */
-
 #ifndef EXCEPTION_H
 #define EXCEPTION_H
 

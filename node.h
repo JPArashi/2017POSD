@@ -51,8 +51,7 @@ class Node
                 return string("false.");
             }
             else{
-                if(leftResult != "true." &&
-                   leftResult != "false."){
+                if(leftResult != "false."){
                     result = leftResult;
                 }
                 if(rightResult != "true." &&
