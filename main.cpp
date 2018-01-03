@@ -40,7 +40,6 @@ int main(int argc, char **argv)
           Node *expressionTree = p.expressionTree();
           expressionTree->evaluate();
           string result = expressionTree->getResult();
-          cout << allNowInput << endl;
           cout << result << endl;
           break;
         }
